@@ -2,7 +2,75 @@
 
 import { createClient } from "@/lib/supabase/client";
 import type { MT5Account } from "@/lib/types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const MT5_SERVERS = [
+  "MetaQuotes-Demo",
+  "ICMarketsSC-Demo",
+  "ICMarketsSC-Live01",
+  "ICMarketsSC-Live02",
+  "ICMarketsSC-Live03",
+  "ICMarketsSC-Live04",
+  "ICMarketsSC-Live06",
+  "ICMarketsSC-Live07",
+  "ICMarkets-Demo",
+  "ICMarkets-Live01",
+  "ICMarkets-Live02",
+  "Pepperstone-Demo",
+  "Pepperstone-Live",
+  "Pepperstone-Edge-Demo",
+  "Pepperstone-Edge-Live",
+  "FPMarkets-Demo",
+  "FPMarkets-Live",
+  "Exness-MT5Real",
+  "Exness-MT5Trial",
+  "Exness-MT5Real2",
+  "Exness-MT5Real3",
+  "Exness-MT5Real4",
+  "Exness-MT5Real6",
+  "Exness-MT5Real7",
+  "XMGlobal-MT5",
+  "XMGlobal-MT5 2",
+  "XMGlobal-MT5 3",
+  "FTMO-Demo",
+  "FTMO-Server",
+  "FTMO-Server2",
+  "FundedNext-Demo",
+  "FundedNext-Server",
+  "OctaFX-Demo",
+  "OctaFX-Real",
+  "RoboForex-Demo",
+  "RoboForex-ECN",
+  "RoboForex-Prime",
+  "Tickmill-Demo",
+  "Tickmill-Live",
+  "FBS-Demo",
+  "FBS-Real",
+  "Deriv-Demo",
+  "Deriv-Server",
+  "Deriv-Server-02",
+  "OANDA-OandaPractice-1",
+  "OANDA-OandaLive-1",
+  "AdmiralMarkets-Demo",
+  "AdmiralMarkets-Live",
+  "AvaTrade-Demo",
+  "AvaTrade-Live",
+  "FXCM-MT5",
+  "HFMarkets-Demo",
+  "HFMarkets-Live",
+  "VantageInternational-Demo",
+  "VantageInternational-Live",
+  "EightCap-Demo",
+  "EightCap-Live",
+  "ThinkMarkets-Demo",
+  "ThinkMarkets-Live",
+  "AXITrader-Demo",
+  "AXITrader-Live",
+  "BlackBullMarkets-Demo",
+  "BlackBullMarkets-Live",
+  "MOTCapital-Live-1",
+  "MOTCapital-Demo-1",
+];
 
 export default function AccountsPage() {
   const [accounts, setAccounts] = useState<MT5Account[]>([]);
@@ -17,7 +85,25 @@ export default function AccountsPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [showServerSuggestions, setShowServerSuggestions] = useState(false);
+  const serverRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
+
+  const filteredServers = form.server
+    ? MT5_SERVERS.filter((s) =>
+        s.toLowerCase().includes(form.server.toLowerCase())
+      )
+    : MT5_SERVERS;
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (serverRef.current && !serverRef.current.contains(e.target as Node)) {
+        setShowServerSuggestions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   async function fetchAccounts() {
     const { data } = await supabase
@@ -147,16 +233,38 @@ export default function AccountsPage() {
                 placeholder="My Demo Account"
               />
             </div>
-            <div>
+            <div ref={serverRef} className="relative">
               <label className="block text-sm font-medium mb-1.5">Server</label>
               <input
                 type="text"
                 value={form.server}
-                onChange={(e) => setForm({ ...form, server: e.target.value })}
+                onChange={(e) => {
+                  setForm({ ...form, server: e.target.value });
+                  setShowServerSuggestions(true);
+                }}
+                onFocus={() => setShowServerSuggestions(true)}
                 required
+                autoComplete="off"
                 className="w-full px-3 py-2 border border-[var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-sm"
                 placeholder="MetaQuotes-Demo"
               />
+              {showServerSuggestions && filteredServers.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-[var(--color-border)] rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                  {filteredServers.map((server) => (
+                    <button
+                      key={server}
+                      type="button"
+                      onClick={() => {
+                        setForm({ ...form, server });
+                        setShowServerSuggestions(false);
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 transition-colors"
+                    >
+                      {server}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium mb-1.5">Login</label>

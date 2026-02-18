@@ -56,6 +56,21 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Webhook page is admin-only — redirect non-admins to overview
+  if (pathname === "/webhook") {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if (profile?.role !== "admin") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/overview";
+      return NextResponse.redirect(url);
+    }
+  }
+
   // Admin route protection
   if (pathname.startsWith("/admin")) {
     const { data: profile } = await supabase

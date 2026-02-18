@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pipify - TradingView to MT5 Auto-Trading",
+  title: "a - TradingView to MT5 Auto-Trading",
   description:
     "Automatically execute TradingView alerts on your MetaTrader 5 account",
 };
