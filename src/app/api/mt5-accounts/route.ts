@@ -26,6 +26,12 @@ export async function POST(request: Request) {
   const encryptedPassword = await encrypt(password);
   const admin = createAdminClient();
 
+  // Ensure profile exists (trigger may not have fired)
+  await admin.from("profiles").upsert(
+    { id: user.id, email: user.email ?? "", full_name: user.user_metadata?.full_name ?? "" },
+    { onConflict: "id", ignoreDuplicates: true }
+  );
+
   const { data, error } = await admin.from("mt5_accounts").insert({
     user_id: user.id,
     account_name: account_name || "Default",
