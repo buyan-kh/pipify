@@ -76,7 +76,7 @@ export default function WebhookPage() {
           key={wk.id}
           className="bg-white rounded-xl border border-[var(--color-border)] p-6 mb-6"
         >
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div className="flex items-center gap-3">
               <h2 className="text-lg font-semibold">{wk.label}</h2>
               <span

@@ -44,48 +44,14 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="w-64 bg-[var(--color-sidebar)] min-h-screen flex flex-col border-r border-slate-800">
-      <div className="p-6 pb-8">
-        <Link href="/overview" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)] flex items-center justify-center">
-            <svg
-              className="w-4 h-4 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2.5}
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-          </div>
-          <span className="text-lg font-bold text-white tracking-tight">
-            ariljaa
-          </span>
-        </Link>
-      </div>
-
-      <nav className="flex-1 px-3 space-y-0.5">
-        <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-widest text-slate-500">
-          Menu
-        </p>
-        {navItems.map((item) => {
-          const isActive = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium ${
-                isActive
-                  ? "bg-[var(--color-primary)] text-white shadow-lg shadow-blue-500/20"
-                  : "text-[var(--color-sidebar-text)] hover:bg-[var(--color-sidebar-hover)] hover:text-white"
-              }`}
-            >
+    <>
+      {/* Desktop sidebar */}
+      <aside className="hidden md:flex w-64 bg-[var(--color-sidebar)] min-h-screen flex-col border-r border-slate-800">
+        <div className="p-6 pb-8">
+          <Link href="/overview" className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)] flex items-center justify-center">
               <svg
-                className="w-[18px] h-[18px] flex-shrink-0"
+                className="w-4 h-4 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -93,37 +59,136 @@ export function Sidebar() {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d={item.icon}
+                  strokeWidth={2.5}
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
                 />
               </svg>
+            </div>
+            <span className="text-lg font-bold text-white tracking-tight">
+              ariljaa
+            </span>
+          </Link>
+        </div>
+
+        <nav className="flex-1 px-3 space-y-0.5">
+          <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+            Menu
+          </p>
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium ${
+                  isActive
+                    ? "bg-[var(--color-primary)] text-white shadow-lg shadow-blue-500/20"
+                    : "text-[var(--color-sidebar-text)] hover:bg-[var(--color-sidebar-hover)] hover:text-white"
+                }`}
+              >
+                <svg
+                  className="w-[18px] h-[18px] flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d={item.icon}
+                  />
+                </svg>
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="p-3 border-t border-slate-800">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-[var(--color-sidebar-text)] hover:bg-[var(--color-sidebar-hover)] hover:text-white w-full"
+          >
+            <svg
+              className="w-[18px] h-[18px] flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            Sign out
+          </button>
+        </div>
+      </aside>
+
+      {/* Mobile bottom nav */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[var(--color-sidebar)] border-t border-slate-800 flex items-center justify-around px-2 py-1 safe-bottom">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg text-[11px] font-medium min-w-0 ${
+                isActive
+                  ? "text-white"
+                  : "text-[var(--color-sidebar-text)]"
+              }`}
+            >
+              <div
+                className={`p-1.5 rounded-lg ${
+                  isActive
+                    ? "bg-[var(--color-primary)] shadow-lg shadow-blue-500/20"
+                    : ""
+                }`}
+              >
+                <svg
+                  className="w-5 h-5 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d={item.icon}
+                  />
+                </svg>
+              </div>
               {item.label}
             </Link>
           );
         })}
-      </nav>
-
-      <div className="p-3 border-t border-slate-800">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-[var(--color-sidebar-text)] hover:bg-[var(--color-sidebar-hover)] hover:text-white w-full"
+          className="flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg text-[11px] font-medium text-[var(--color-sidebar-text)] min-w-0"
         >
-          <svg
-            className="w-[18px] h-[18px] flex-shrink-0"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
-          </svg>
-          Sign out
+          <div className="p-1.5">
+            <svg
+              className="w-5 h-5 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+          </div>
+          Exit
         </button>
-      </div>
-    </aside>
+      </nav>
+    </>
   );
 }
