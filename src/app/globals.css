@@ -160,6 +160,11 @@ input:focus, select:focus {
   transition-duration: 150ms;
 }
 
+/* Safe area for mobile bottom nav */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* But don't animate layout shifts */
 a, button, input, select, textarea, table, tr, td, th, div, main, aside, header, footer, nav, section {
   transition-property: color, background-color, border-color, box-shadow, opacity, transform;

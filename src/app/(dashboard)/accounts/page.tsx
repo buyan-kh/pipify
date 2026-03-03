@@ -323,13 +323,13 @@ export default function AccountsPage() {
           {accounts.map((account) => (
             <div
               key={account.id}
-              className="bg-white rounded-xl border border-[var(--color-border)] p-5 flex items-center justify-between"
+              className="bg-white rounded-xl border border-[var(--color-border)] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
             >
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-3">
-                  <h3 className="font-semibold">{account.account_name}</h3>
+                  <h3 className="font-semibold truncate">{account.account_name}</h3>
                   <span
-                    className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${
+                    className={`inline-flex px-2 py-0.5 rounded text-xs font-medium shrink-0 ${
                       account.is_active
                         ? "bg-green-100 text-green-700"
                         : "bg-gray-100 text-gray-500"
@@ -338,11 +338,11 @@ export default function AccountsPage() {
                     {account.is_active ? "Active" : "Inactive"}
                   </span>
                 </div>
-                <p className="text-sm text-[var(--color-muted)] mt-1">
+                <p className="text-sm text-[var(--color-muted)] mt-1 truncate">
                   Server: {account.server} &middot; Login: {account.login}
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 shrink-0">
                 <button
                   onClick={() => handleToggle(account.id, account.is_active)}
                   className="px-3 py-1.5 text-xs rounded-lg border border-[var(--color-border)] hover:bg-gray-50 transition-colors"
