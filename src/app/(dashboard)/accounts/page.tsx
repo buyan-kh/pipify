@@ -85,6 +85,7 @@ export default function AccountsPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [showServerSuggestions, setShowServerSuggestions] = useState(false);
   const serverRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
@@ -151,6 +152,8 @@ export default function AccountsPage() {
 
       resetForm();
       fetchAccounts();
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 2000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save");
     } finally {
@@ -361,6 +364,29 @@ export default function AccountsPage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {showSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center gap-4 animate-[scaleIn_0.3s_ease-out]">
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+              <svg
+                className="w-9 h-9 text-green-500"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <p className="text-xl font-semibold text-gray-900">Амжилттай</p>
+          </div>
         </div>
       )}
     </div>
